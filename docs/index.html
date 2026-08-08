@@ -3,81 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevToggle | Secure Android Quick Settings & Developer Options Manager</title>
     
     <!-- Primary Meta Tags -->
-    <title>DevToggle | Instant Quick Settings for Android Developers</title>
-    <meta name="title" content="DevToggle | Instant Quick Settings for Android Developers">
-    <meta name="description" content="Supercharge your Android Quick Settings. Instantly toggle Developer Options, USB Debugging, and Wireless Debugging without ever opening the Settings app.">
-    <meta name="keywords" content="Android, DevToggle, Developer Options, Shizuku, Quick Settings, USB Debugging, Wireless Debugging">
+    <meta name="title" content="DevToggle | Secure Android Quick Settings & Developer Options Manager">
+    <meta name="description" content="Supercharge your Android Quick Settings. Securely and instantly toggle Developer Options, ADB USB Debugging, and Wireless Debugging without root using Shizuku.">
+    <meta name="keywords" content="Android, DevToggle, Developer Options, Shizuku, Quick Settings, USB Debugging, Wireless Debugging, ADB, Android Developer Tools, secure settings manager, no root">
     <meta name="author" content="DevToggle Contributors">
-    <meta name="theme-color" content="#0b0f19">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://nourddinak.github.io/DevToggle/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="DevToggle | Instant Quick Settings for Android Developers">
-    <meta property="og:description" content="Supercharge your Android Quick Settings. Instantly toggle Developer Options, USB Debugging, and Wireless Debugging without ever opening the Settings app.">
-    <meta property="og:image" content="assets/logo.png">
+    <meta property="og:url" content="https://nourddinak.github.io/DevToggle/">
+    <meta property="og:title" content="DevToggle | Secure Android Quick Settings & Developer Options Manager">
+    <meta property="og:description" content="Securely and instantly toggle Developer Options, ADB USB Debugging, and Wireless Debugging directly from your notification shade.">
+    <meta property="og:image" content="https://nourddinak.github.io/DevToggle/assets/app_mockup.png">
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="index.css">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://nourddinak.github.io/DevToggle/">
+    <meta property="twitter:title" content="DevToggle | Secure Android Quick Settings & Developer Options Manager">
+    <meta property="twitter:description" content="Securely and instantly toggle Developer Options, ADB USB Debugging, and Wireless Debugging directly from your notification shade.">
+    <meta property="twitter:image" content="https://nourddinak.github.io/DevToggle/assets/app_mockup.png">
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="assets/logo.png">
+
+    <!-- JSON-LD Structured Data for SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "DevToggle",
+      "operatingSystem": "Android",
+      "applicationCategory": "DeveloperApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "DevToggle is a power-user tool for Android developers. It securely leverages Shizuku to allow instant toggling of Developer Options, USB Debugging, and Wireless Debugging directly from the native Android Quick Settings shade.",
+      "image": "https://nourddinak.github.io/DevToggle/assets/logo.png",
+      "author": {
+        "@type": "Organization",
+        "name": "DevToggle Contributors"
+      }
+    }
+    </script>
     
-    <!-- Favicon -->
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="assets/logo.png">
 </head>
 <body>
+    
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
 
-    <header>
-        <div class="logo-container">
-            <img src="assets/logo.png" alt="DevToggle Logo">
-            <div class="logo-text">DevToggle</div>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="brand">
+                <img src="assets/logo.png" alt="DevToggle Logo" class="brand-logo">
+                <span class="brand-name">DevToggle</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How it Works</a>
+                <a href="https://github.com/nourddinak/DevToggle" class="nav-btn" target="_blank">GitHub</a>
+            </div>
         </div>
-        <a href="https://github.com/nourddinak/DevToggle" class="github-link">View on GitHub</a>
-    </header>
+    </nav>
 
     <main>
         <section class="hero">
-            <h1>The Ultimate Power-User Tool for Android.</h1>
-            <p>Supercharge your Android Quick Settings. Instantly toggle Developer Options, USB Debugging, and Wireless Debugging without ever opening the Settings app.</p>
-            <a href="https://github.com/nourddinak/DevToggle/releases" class="cta-button">Download Latest APK</a>
+            <div class="hero-content">
+                <div class="badge">🔥 Now available for Android 14+</div>
+                <h1 class="hero-title">The Ultimate<br>Power-User Tool.</h1>
+                <p class="hero-subtitle">Instantly flip Developer Options, USB Debugging, and more directly from your notification shade. No root required. Fully open-source.</p>
+                <div class="hero-actions">
+                    <a href="https://github.com/nourddinak/DevToggle/releases" class="btn btn-primary">Download APK</a>
+                    <a href="#features" class="btn btn-secondary">Explore Features</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="mockup-container">
+                    <img src="assets/app_mockup.png" alt="DevToggle App Mockup" class="app-mockup">
+                    <div class="glow-layer"></div>
+                </div>
+            </div>
         </section>
 
-        <section class="features">
-            <div class="feature-card">
-                <div class="feature-icon">🚀</div>
-                <h3 class="feature-title">Instant Toggles</h3>
-                <p class="feature-desc">Flip Developer Options, USB Debugging, and Wireless Debugging on or off instantly directly from your notification shade.</p>
-            </div>
+        <section id="features" class="features-section">
+            <h2 class="section-heading">Everything You Need. <br><span>One Tap Away.</span></h2>
             
-            <div class="feature-card">
-                <div class="feature-icon">🔗</div>
-                <h3 class="feature-title">Custom Group Toggle</h3>
-                <p class="feature-desc">Configure a Custom Group Tile to flip multiple developer settings simultaneously with a single tap.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3 class="feature-title">Native Integration</h3>
-                <p class="feature-desc">Uses Android's native Quick Settings Tiles (QS_TILE), making it feel seamlessly integrated into your system.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🛡️</div>
-                <h3 class="feature-title">Secure & Private</h3>
-                <p class="feature-desc">Requires no root and no weird accessibility workarounds. Open-source, no internet permission required, and collects zero data.</p>
+            <div class="features-grid">
+                <div class="card">
+                    <div class="card-icon">⚡</div>
+                    <h3>Instant Access</h3>
+                    <p>Forget diving through menus. Toggle your most-used developer settings directly from your Quick Settings.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🔗</div>
+                    <h3>Custom Groups</h3>
+                    <p>Turn on Developer Options and USB Debugging simultaneously with a single, programmable Quick Tile.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🛡️</div>
+                    <h3>Privacy First</h3>
+                    <p>DevToggle requires exactly zero internet permissions. It operates 100% locally on your device for total peace of mind.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🎨</div>
+                    <h3>Material You</h3>
+                    <p>A stunning, modern setup application built with native Material Design 3 guidelines that adapts to your theme.</p>
+                </div>
             </div>
         </section>
 
-        <section class="how-it-works">
-            <h2 class="section-title">How It Works</h2>
-            <p>Modern Android versions heavily restrict third-party apps from modifying secure system settings like <code>adb_enabled</code>. DevToggle bypasses these restrictions cleanly and safely using <strong>Shizuku</strong>.</p>
-            <p>DevToggle uses Shizuku exactly once to grant itself the native <code>WRITE_SECURE_SETTINGS</code> permission. Once granted, it writes directly to the Android Settings provider for blazing fast, instant toggles!</p>
+        <section id="how-it-works" class="how-it-works-section">
+            <div class="glass-panel">
+                <h2>Powered by Shizuku</h2>
+                <p>Modern Android prevents normal apps from altering secure system settings. DevToggle uses <strong>Shizuku</strong> to cleanly and temporarily borrow the necessary elevated permissions.</p>
+                <p>Once authorized, DevToggle integrates natively and writes directly to the Android Settings provider for blazing fast, seamless toggles.</p>
+                <a href="https://shizuku.rikka.app/" target="_blank" class="btn btn-secondary">Learn about Shizuku</a>
+            </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 DevToggle Contributors. Released under the MIT License.</p>
-        <p>Crafted for developers, by developers.</p>
+        <div class="footer-content">
+            <div class="brand">
+                <img src="assets/logo.png" alt="DevToggle Logo" class="brand-logo" style="width: 24px; height: 24px;">
+                <span class="brand-name" style="font-size: 1.2rem;">DevToggle</span>
+            </div>
+            <p>&copy; 2026 DevToggle Contributors. MIT License.</p>
+        </div>
     </footer>
 
+    <script>
+        // Simple vanilla JS for a subtle scroll reveal effect
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card, .glass-panel, .section-heading').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>

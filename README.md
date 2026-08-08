@@ -1,7 +1,7 @@
 <div align="center">
   <img src="assets/logo.png" alt="DevToggle Logo" width="200" />
 
-  # ⚙️ DevToggle
+  # ⚙️ DevToggle | Secure Android Quick Settings Manager
 
   **The ultimate power-user tool for Android developers and enthusiasts.**
   
@@ -9,11 +9,11 @@
   [![API](https://img.shields.io/badge/API-31%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=31)
   [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-  *Supercharge your Android Quick Settings by instantly toggling Developer Options, USB Debugging, and Wireless Debugging without ever opening the Settings app!*
+  *Supercharge your Android Quick Settings. Securely and instantly toggle Developer Options, ADB USB Debugging, and Wireless Debugging directly from your notification shade without root.*
 
 </div>
 
-By leveraging the power of [Shizuku](https://shizuku.rikka.app/), DevToggle securely and natively flips system settings in the background, providing a seamless and instant experience.
+By leveraging the power of [Shizuku](https://shizuku.rikka.app/), DevToggle acts as a secure, open-source Android settings manager that natively flips secure system configurations in the background. Stop navigating through complex menus and manage your Android developer tools instantly.
 
 ---
 
@@ -32,6 +32,22 @@ By leveraging the power of [Shizuku](https://shizuku.rikka.app/), DevToggle secu
 Modern Android versions heavily restrict third-party apps from modifying secure system settings like `adb_enabled` or `development_settings_enabled`. 
 
 DevToggle bypasses these restrictions cleanly by using **Shizuku**, an app that allows normal apps to temporarily borrow elevated system (`adb` or `root`) permissions. DevToggle uses Shizuku exactly once to grant itself the native `WRITE_SECURE_SETTINGS` permission. Once granted, it writes directly to the Android Settings provider for blazing fast, instant toggles!
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+**Does DevToggle require root access?**
+No, DevToggle does not require a rooted device. It securely leverages Shizuku to obtain the necessary permissions via ADB wireless debugging.
+
+**Is it safe to use Shizuku to manage Android settings?**
+Yes. Shizuku is a widely trusted open-source tool. DevToggle only uses Shizuku once to grant itself the standard Android `WRITE_SECURE_SETTINGS` permission. It does not run background processes or connect to the internet.
+
+**How do I turn on USB Debugging quickly without going to Settings?**
+Simply install DevToggle, link it with Shizuku, and drag the "USB Debugging" tile into your Quick Settings notification shade. You can now toggle it with a single tap.
+
+**Will this drain my battery?**
+No. DevToggle contains no background services and collects absolutely zero analytics. It only executes exactly when you press the Quick Setting tile.
 
 ---
 
