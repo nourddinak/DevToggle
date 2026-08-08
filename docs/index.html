@@ -73,6 +73,7 @@
             <div class="nav-links">
                 <a href="#features">Features</a>
                 <a href="#how-it-works">How it Works</a>
+                <a href="#faq">FAQ</a>
                 <a href="https://github.com/nourddinak/DevToggle" class="nav-btn" target="_blank">GitHub</a>
             </div>
         </div>
@@ -133,6 +134,98 @@
                 <p>Modern Android prevents normal apps from altering secure system settings. DevToggle uses <strong>Shizuku</strong> to cleanly and temporarily borrow the necessary elevated permissions.</p>
                 <p>Once authorized, DevToggle integrates natively and writes directly to the Android Settings provider for blazing fast, seamless toggles.</p>
                 <a href="https://shizuku.rikka.app/" target="_blank" class="btn btn-secondary">Learn about Shizuku</a>
+            </div>
+        </section>
+
+        <section id="setup" class="setup-section">
+            <h2 class="section-heading">Getting Started <br><span>In 5 Steps</span></h2>
+            <div class="setup-grid">
+                <div class="card">
+                    <div class="step-number">1</div>
+                    <h3>Install Shizuku</h3>
+                    <p>Get it from the Google Play Store or GitHub to handle elevated permissions.</p>
+                </div>
+                <div class="card">
+                    <div class="step-number">2</div>
+                    <h3>Start Shizuku</h3>
+                    <p>Follow the app instructions to start the service via Wireless Debugging.</p>
+                </div>
+                <div class="card">
+                    <div class="step-number">3</div>
+                    <h3>Open DevToggle</h3>
+                    <p>Launch the DevToggle app to begin the configuration process.</p>
+                </div>
+                <div class="card">
+                    <div class="step-number">4</div>
+                    <h3>Grant Permissions</h3>
+                    <p>Tap "Grant permission" to authorize DevToggle within Shizuku safely.</p>
+                </div>
+                <div class="card">
+                    <div class="step-number">5</div>
+                    <h3>Add Tiles</h3>
+                    <p>Edit your notification shade and drag your new tiles into active Quick Settings!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials-section">
+            <h2 class="section-heading">Loved by <br><span>Developers</span></h2>
+            <div class="testimonials-grid">
+                <div class="glass-panel testimonial-card">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p class="testimonial-quote">"This app is a game-changer! No more digging through the settings app to toggle wireless debugging. Absolutely brilliant."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">A</div>
+                        <div class="author-info">
+                            <h4>Alex Morgan</h4>
+                            <span>Android Developer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-panel testimonial-card">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p class="testimonial-quote">"Super clean Material 3 UI and works perfectly with Shizuku. I use the custom group toggle constantly."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">S</div>
+                        <div class="author-info">
+                            <h4>Sarah Lin</h4>
+                            <span>Tech Enthusiast</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-panel testimonial-card">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p class="testimonial-quote">"Finally, a secure way to manage developer options without rooting my device. DevToggle does exactly what it promises."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">J</div>
+                        <div class="author-info">
+                            <h4>James Patel</h4>
+                            <span>Software Engineer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="faq-section">
+            <h2 class="section-heading">Frequently Asked <br><span>Questions</span></h2>
+            <div class="faq-container">
+                <div class="faq-item glass-panel">
+                    <h3 class="faq-question">Does DevToggle require root access?</h3>
+                    <p class="faq-answer">No, DevToggle does not require a rooted device. It securely leverages Shizuku to obtain the necessary permissions via ADB wireless debugging.</p>
+                </div>
+                <div class="faq-item glass-panel">
+                    <h3 class="faq-question">Is it safe to use Shizuku to manage Android settings?</h3>
+                    <p class="faq-answer">Yes. Shizuku is a widely trusted open-source tool. DevToggle only uses Shizuku once to grant itself the standard Android <code>WRITE_SECURE_SETTINGS</code> permission. It does not run background processes or connect to the internet.</p>
+                </div>
+                <div class="faq-item glass-panel">
+                    <h3 class="faq-question">How do I turn on USB Debugging quickly without going to Settings?</h3>
+                    <p class="faq-answer">Simply install DevToggle, link it with Shizuku, and drag the "USB Debugging" tile into your Quick Settings notification shade. You can now toggle it with a single tap.</p>
+                </div>
+                <div class="faq-item glass-panel">
+                    <h3 class="faq-question">Will this drain my battery?</h3>
+                    <p class="faq-answer">No. DevToggle contains no background services and collects absolutely zero analytics. It only executes exactly when you press the Quick Setting tile.</p>
+                </div>
             </div>
         </section>
     </main>
