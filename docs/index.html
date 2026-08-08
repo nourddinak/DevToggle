@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>DevToggle | Instant Quick Settings for Android Developers</title>
+    <meta name="title" content="DevToggle | Instant Quick Settings for Android Developers">
+    <meta name="description" content="Supercharge your Android Quick Settings. Instantly toggle Developer Options, USB Debugging, and Wireless Debugging without ever opening the Settings app.">
+    <meta name="keywords" content="Android, DevToggle, Developer Options, Shizuku, Quick Settings, USB Debugging, Wireless Debugging">
+    <meta name="author" content="DevToggle Contributors">
+    <meta name="theme-color" content="#0b0f19">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DevToggle | Instant Quick Settings for Android Developers">
+    <meta property="og:description" content="Supercharge your Android Quick Settings. Instantly toggle Developer Options, USB Debugging, and Wireless Debugging without ever opening the Settings app.">
+    <meta property="og:image" content="assets/logo.png">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="index.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo.png">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="assets/logo.png" alt="DevToggle Logo">
+            <div class="logo-text">DevToggle</div>
+        </div>
+        <a href="https://github.com/nourddinak/DevToggle" class="github-link">View on GitHub</a>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>The Ultimate Power-User Tool for Android.</h1>
+            <p>Supercharge your Android Quick Settings. Instantly toggle Developer Options, USB Debugging, and Wireless Debugging without ever opening the Settings app.</p>
+            <a href="https://github.com/nourddinak/DevToggle/releases" class="cta-button">Download Latest APK</a>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3 class="feature-title">Instant Toggles</h3>
+                <p class="feature-desc">Flip Developer Options, USB Debugging, and Wireless Debugging on or off instantly directly from your notification shade.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3 class="feature-title">Custom Group Toggle</h3>
+                <p class="feature-desc">Configure a Custom Group Tile to flip multiple developer settings simultaneously with a single tap.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Native Integration</h3>
+                <p class="feature-desc">Uses Android's native Quick Settings Tiles (QS_TILE), making it feel seamlessly integrated into your system.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3 class="feature-title">Secure & Private</h3>
+                <p class="feature-desc">Requires no root and no weird accessibility workarounds. Open-source, no internet permission required, and collects zero data.</p>
+            </div>
+        </section>
+
+        <section class="how-it-works">
+            <h2 class="section-title">How It Works</h2>
+            <p>Modern Android versions heavily restrict third-party apps from modifying secure system settings like <code>adb_enabled</code>. DevToggle bypasses these restrictions cleanly and safely using <strong>Shizuku</strong>.</p>
+            <p>DevToggle uses Shizuku exactly once to grant itself the native <code>WRITE_SECURE_SETTINGS</code> permission. Once granted, it writes directly to the Android Settings provider for blazing fast, instant toggles!</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 DevToggle Contributors. Released under the MIT License.</p>
+        <p>Crafted for developers, by developers.</p>
+    </footer>
+
+</body>
+</html>

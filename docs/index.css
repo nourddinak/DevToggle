@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500&display=swap');
+
+:root {
+  --bg-color: #0b0f19;
+  --text-primary: #f0f6fc;
+  --text-secondary: #8b949e;
+  --accent-color: #58a6ff;
+  --accent-glow: rgba(88, 166, 255, 0.4);
+  --glass-bg: rgba(22, 27, 34, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --card-hover: rgba(30, 36, 45, 0.8);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  background-image: radial-gradient(circle at top right, rgba(88, 166, 255, 0.1), transparent 40%),
+                    radial-gradient(circle at bottom left, rgba(138, 43, 226, 0.1), transparent 40%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+header {
+  padding: 2rem 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-container img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  background: linear-gradient(90deg, #fff, #8b949e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.github-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.github-link:hover {
+  color: var(--accent-color);
+}
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+.hero {
+  text-align: center;
+  padding: 6rem 0 4rem;
+  animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero h1 {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #ffffff, #58a6ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+}
+
+.hero p {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 3rem;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--accent-color);
+  text-decoration: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px var(--accent-glow);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px var(--accent-glow);
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 6rem;
+}
+
+.feature-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.3s, background 0.3s;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.feature-card:nth-child(2) { animation-delay: 0.1s; }
+.feature-card:nth-child(3) { animation-delay: 0.2s; }
+.feature-card:nth-child(4) { animation-delay: 0.3s; }
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  background: var(--card-hover);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.feature-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.feature-desc {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.how-it-works {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 4rem;
+  margin-bottom: 6rem;
+  text-align: center;
+}
+
+.how-it-works p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 800px;
+  margin: 0 auto 2rem;
+}
+
+footer {
+  text-align: center;
+  padding: 3rem 5%;
+  border-top: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  margin-top: 4rem;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 2.5rem; }
+  .how-it-works { padding: 2rem; }
+}
