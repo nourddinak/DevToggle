@@ -72,6 +72,14 @@ class DevToggleRepository(private val context: Context) {
         }.apply()
     }
 
+    fun hasCompletedOnboarding(): Boolean {
+        return prefs.getBoolean("has_completed_onboarding", false)
+    }
+
+    fun setCompletedOnboarding(completed: Boolean) {
+        prefs.edit().putBoolean("has_completed_onboarding", completed).apply()
+    }
+
 
 
     fun shizukuStatus(): ShizukuStatus {
@@ -121,9 +129,18 @@ class DevToggleRepository(private val context: Context) {
 
     fun openShizuku(): Boolean {
         val intent = context.packageManager.getLaunchIntentForPackage(SHIZUKU_PACKAGE)
-            ?: Intent(Intent.ACTION_VIEW).apply {
-                data = android.net.Uri.parse("https://shizuku.rikka.app/")
-            }
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            return runCatching {
+                context.startActivity(intent)
+                true
+            }.getOrDefault(false)
+        }
+        return false
+    }
+
+    fun openUrl(url: String): Boolean {
+        val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         return runCatching {
             context.startActivity(intent)

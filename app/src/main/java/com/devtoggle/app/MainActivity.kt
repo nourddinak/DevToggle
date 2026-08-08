@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -107,6 +108,7 @@ private fun DevToggleApp() {
     var showAllCapabilities by remember { mutableStateOf(false) }
     var customTileConfig by remember { mutableStateOf(repository.getCustomTileConfig()) }
     var updateAvailable by remember { mutableStateOf<Pair<String, String>?>(null) }
+    var hasCompletedOnboarding by remember { mutableStateOf(repository.hasCompletedOnboarding()) }
 
     LaunchedEffect(Unit) {
         val update = Updater.checkForUpdates(context)
@@ -170,6 +172,19 @@ private fun DevToggleApp() {
         }
     }
 
+    if (!hasCompletedOnboarding) {
+        com.devtoggle.app.ui.OnboardingScreen(
+            status = status,
+            repository = repository,
+            refresh = { refresh() },
+            onComplete = {
+                repository.setCompletedOnboarding(true)
+                hasCompletedOnboarding = true
+            }
+        )
+        return
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -206,10 +221,9 @@ private fun DevToggleApp() {
                     UpdateBanner(update = updateAvailable!!)
                 }
             }
-            item { Spacer(Modifier.height(4.dp)) }
-            item { ShizukuCard(status, repository, ::refresh) }
+            item { ShizukuSection(status, repository, ::refresh) }
             item { 
-                QuickSettingsCard(
+                QuickSettingsSection(
                     developerOptionsEnabled = developerOptionsEnabled,
                     usbDebuggingEnabled = usbDebuggingEnabled,
                     wirelessDebuggingEnabled = wirelessDebuggingEnabled,
@@ -218,7 +232,7 @@ private fun DevToggleApp() {
                 ) 
             }
             item {
-                CustomTileConfigCard(
+                CustomTileConfigSection(
                     config = customTileConfig,
                     onConfigChanged = { newConfig ->
                         repository.saveCustomTileConfig(newConfig)
@@ -235,46 +249,44 @@ private fun DevToggleApp() {
                 )
             }
             item { SafetySection() }
-            item { Spacer(Modifier.height(12.dp)) }
+            item { Spacer(Modifier.height(32.dp)) }
         }
     }
 }
 
 @Composable
-private fun ShizukuCard(
+private fun ShizukuSection(
     status: ShizukuStatus,
     repository: DevToggleRepository,
     refresh: () -> Unit,
 ) {
     val ready = status.ready
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = if (ready) MaterialTheme.colorScheme.primaryContainer
-            else MaterialTheme.colorScheme.surfaceVariant,
-        ),
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                 StatusIcon(
                     icon = if (ready) Icons.Outlined.CheckCircle else Icons.Outlined.Warning,
                     tint = if (ready) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                 )
                 Spacer(Modifier.size(12.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(
-                        if (ready) "Setup Complete" else "Setup required",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    Text(
-                        if (status.hasNativePermissions) "DevToggle can toggle settings natively!"
-                        else if (ready) "DevToggle can verify the tile state."
-                        else "Complete the setup below to use the tile.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                Text(
+                    if (ready) "Setup Complete" else "Setup Required",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(Modifier.size(4.dp))
+                Text(
+                    if (status.hasNativePermissions) "DevToggle can toggle settings natively!"
+                    else if (ready) "DevToggle can verify the tile state."
+                    else "Complete the setup below to use the tile.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
             }
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             StatusRow("Native permissions", status.hasNativePermissions)
@@ -306,7 +318,6 @@ private fun ShizukuCard(
         }
     }
 }
-
 @Composable
 private fun StatusRow(label: String, active: Boolean) {
     Row(
@@ -325,20 +336,37 @@ private fun StatusRow(label: String, active: Boolean) {
 }
 
 @Composable
-private fun QuickSettingsCard(
+private fun QuickSettingsSection(
     developerOptionsEnabled: Boolean,
     usbDebuggingEnabled: Boolean,
     wirelessDebuggingEnabled: Boolean,
     status: ShizukuStatus,
     repository: DevToggleRepository,
 ) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-        shape = RoundedCornerShape(20.dp),
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-            SectionHeading(Icons.Outlined.DeveloperMode, "Quick Settings tiles")
+        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                Icon(Icons.Outlined.DeveloperMode, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(32.dp))
+                Spacer(Modifier.size(8.dp))
+                Text(
+                    "Quick Settings Tiles",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(Modifier.size(4.dp))
+                Text(
+                    "Add them from the edit button in your notification shade. Tapping a tile opens Android Settings for a user-confirmed change.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
+            }
+            
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             
             TileItemRow("Developer Options", developerOptionsEnabled, status, Icons.Outlined.DeveloperMode)
             TileItemRow("USB Debugging", usbDebuggingEnabled, status, Icons.Outlined.Usb)
@@ -347,12 +375,7 @@ private fun QuickSettingsCard(
                 TileItemRow("Wireless Debugging", wirelessDebuggingEnabled, status, Icons.Outlined.Wifi)
             }
             
-            Text(
-                "Add them from the edit button in your notification shade. Tapping a tile opens Android Settings for a user-confirmed change.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            OutlinedButton(
+            Button(
                 onClick = { repository.openDeveloperSettings() },
                 modifier = Modifier.fillMaxWidth(),
             ) {
@@ -366,30 +389,23 @@ private fun QuickSettingsCard(
 
 @Composable
 private fun TileItemRow(title: String, enabled: Boolean, status: ShizukuStatus, icon: ImageVector) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            Modifier
-                .size(48.dp)
-                .clip(RoundedCornerShape(14.dp))
-                .background(if (status.ready) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                icon,
-                contentDescription = null,
-                tint = if (status.ready) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-        Spacer(Modifier.size(14.dp))
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+        Icon(
+            icon,
+            contentDescription = null,
+            tint = if (status.ready) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(28.dp)
+        )
+        Spacer(Modifier.size(16.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, fontWeight = FontWeight.SemiBold)
+            Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Medium)
             Text(
                 when {
                     !status.ready -> "Unavailable · Shizuku not ready"
                     enabled -> "Active · On"
                     else -> "Inactive · Off"
                 },
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
@@ -468,35 +484,36 @@ private fun SetupStep(
     complete: Boolean,
     onClick: () -> Unit,
 ) {
-    Card(
-        onClick = onClick,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.55f)),
-        shape = RoundedCornerShape(16.dp),
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
     ) {
         Row(
-            Modifier.padding(14.dp),
+            Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
                 Modifier
                     .size(34.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(if (complete) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface),
+                    .background(if (complete) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant),
                 contentAlignment = Alignment.Center,
             ) {
                 if (complete) {
                     Icon(Icons.Outlined.CheckCircle, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
                 } else {
-                    Text(number.toString(), fontWeight = FontWeight.Bold)
+                    Text(number.toString(), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
-            Spacer(Modifier.size(12.dp))
+            Spacer(Modifier.size(16.dp))
             Column(Modifier.weight(1f)) {
-                Text(title, fontWeight = FontWeight.SemiBold)
-                Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Medium)
+                Text(description, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Icon(Icons.Outlined.ArrowForward, contentDescription = "Open $title", tint = MaterialTheme.colorScheme.onSurfaceVariant)
         }
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, modifier = Modifier.padding(start = 74.dp))
     }
 }
 
@@ -506,28 +523,34 @@ private fun CapabilitiesSection(
     showAll: Boolean,
     onShowAll: () -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Capabilities", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            Text(
-                if (showAll) "Hide" else "See all",
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.labelLarge,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .padding(6.dp),
-            )
-        }
-        CapabilityItem(capabilities.first())
-        AnimatedVisibility(showAll) {
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                capabilities.drop(1).forEach { CapabilityItem(it) }
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant
+    ) {
+        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                Icon(Icons.Outlined.Info, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(32.dp))
+                Spacer(Modifier.size(8.dp))
+                Text(
+                    "Capabilities",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                )
             }
-        }
-        OutlinedButton(onClick = onShowAll, modifier = Modifier.fillMaxWidth()) {
-            Text(if (showAll) "Show less" else "View device capability details")
-            Spacer(Modifier.size(8.dp))
-            Icon(Icons.Outlined.Info, contentDescription = null)
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            CapabilityItem(capabilities.first())
+            AnimatedVisibility(showAll) {
+                Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                    capabilities.drop(1).forEach { CapabilityItem(it) }
+                }
+            }
+            Button(
+                onClick = onShowAll,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(if (showAll) "Hide details" else "See all capabilities")
+            }
         }
     }
 }
@@ -540,46 +563,42 @@ private fun CapabilityItem(capability: Capability) {
         CapabilityKind.DEPENDENT -> MaterialTheme.colorScheme.tertiary to Icons.Outlined.Info
         CapabilityKind.UNSUPPORTED -> MaterialTheme.colorScheme.error to Icons.Outlined.Warning
     }
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-        shape = RoundedCornerShape(16.dp),
-    ) {
-        Row(Modifier.padding(14.dp), verticalAlignment = Alignment.Top) {
-            Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(22.dp))
-            Spacer(Modifier.size(12.dp))
-            Column {
-                Text(capability.title, fontWeight = FontWeight.SemiBold)
-                Spacer(Modifier.size(3.dp))
-                Text(capability.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
+    Row(verticalAlignment = Alignment.Top, modifier = Modifier.fillMaxWidth()) {
+        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(24.dp))
+        Spacer(Modifier.size(16.dp))
+        Column {
+            Text(capability.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Medium)
+            Spacer(Modifier.size(4.dp))
+            Text(capability.description, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
 
 @Composable
 private fun SafetySection() {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.7f)),
-        shape = RoundedCornerShape(20.dp),
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        Row(Modifier.padding(18.dp), verticalAlignment = Alignment.Top) {
-            Icon(Icons.Outlined.Security, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
+        Column(Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(Icons.Outlined.Security, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(32.dp))
             Spacer(Modifier.size(12.dp))
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("Safety and privacy", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                Text(
-                    "DevToggle does not collect data or modify other apps. Shizuku is used only to check service readiness. Protected system changes remain in Android Settings and require your explicit action.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                )
-                Text(
-                    "No background changes · No accessibility workarounds · No hidden APIs",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
+            Text("Safety and Privacy", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.size(8.dp))
+            Text(
+                "DevToggle does not collect data or modify other apps. Shizuku is used only to check service readiness. Protected system changes remain in Android Settings and require your explicit action.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+            Spacer(Modifier.size(8.dp))
+            Text(
+                "No background changes · No accessibility workarounds · No hidden APIs",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
         }
     }
 }
@@ -619,25 +638,32 @@ private fun ConfigCheckboxRow(
 }
 
 @Composable
-private fun CustomTileConfigCard(
+private fun CustomTileConfigSection(
     config: CustomTileConfig,
     onConfigChanged: (CustomTileConfig) -> Unit
 ) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-            Text(
-                "Custom Group Tile",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-            )
-            Text(
-                "Select which settings the custom tile controls. When toggled, they will all turn on/off together.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                Icon(Icons.Outlined.Extension, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(32.dp))
+                Spacer(Modifier.size(8.dp))
+                Text(
+                    "Custom Group Tile",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(Modifier.size(4.dp))
+                Text(
+                    "Select which settings the custom tile controls. When toggled, they will all turn on/off together.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
+            }
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             
             ConfigCheckboxRow(

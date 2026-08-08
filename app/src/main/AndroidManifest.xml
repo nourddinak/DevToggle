@@ -85,5 +85,20 @@
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+
+        <receiver
+            android:name=".widget.DevToggleWidgetProvider"
+            android:exported="true"
+            android:label="DevToggle Actions">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.devtoggle.app.widget.TOGGLE_DEV_OPTIONS" />
+                <action android:name="com.devtoggle.app.widget.TOGGLE_USB_DEBUGGING" />
+                <action android:name="com.devtoggle.app.widget.TOGGLE_WIRELESS_DEBUGGING" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/devtoggle_widget_info" />
+        </receiver>
     </application>
 </manifest>
