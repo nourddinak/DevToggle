@@ -1,6 +1,17 @@
-# ⚙️ DevToggle
+<div align="center">
+  <img src="assets/logo.png" alt="DevToggle Logo" width="200" />
 
-**DevToggle** is the ultimate power-user tool for Android developers and enthusiasts. It supercharges your Android Quick Settings by allowing you to instantly toggle Developer Options, USB Debugging, and Wireless Debugging without ever opening the Settings app!
+  # ⚙️ DevToggle
+
+  **The ultimate power-user tool for Android developers and enthusiasts.**
+  
+  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+  [![API](https://img.shields.io/badge/API-31%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=31)
+  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+
+  *Supercharge your Android Quick Settings by instantly toggling Developer Options, USB Debugging, and Wireless Debugging without ever opening the Settings app!*
+
+</div>
 
 By leveraging the power of [Shizuku](https://shizuku.rikka.app/), DevToggle securely and natively flips system settings in the background, providing a seamless and instant experience.
 
