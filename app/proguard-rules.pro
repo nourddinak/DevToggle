@@ -1,0 +1,1 @@
+# DevToggle intentionally keeps the Shizuku API surface small.

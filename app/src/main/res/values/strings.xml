@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">DevToggle</string>
+    <string name="tile_label">Developer Options</string>
+    <string name="tile_description">Open and review Android Developer Options</string>
+    <string name="tile_label_on">Developer Options · On</string>
+    <string name="tile_label_off">Developer Options · Off</string>
+    <string name="tile_subtitle_on">On</string>
+    <string name="tile_subtitle_off">Off</string>
+    <string name="tile_subtitle_unavailable">Unavailable</string>
+    <string name="tile_description_on">Developer Options are on. Tap to open Settings.</string>
+    <string name="tile_description_off">Developer Options are off. Tap to open Settings.</string>
+    <string name="tile_description_unavailable">Unavailable until Shizuku is ready.</string>
+
+    <string name="tile_label_usb">USB Debugging</string>
+    <string name="tile_label_usb_on">USB Debugging · On</string>
+    <string name="tile_label_usb_off">USB Debugging · Off</string>
+    <string name="tile_description_usb">Open USB Debugging settings</string>
+
+    <string name="tile_label_wifi">Wireless Debugging</string>
+    <string name="tile_label_wifi_on">Wireless Debugging · On</string>
+    <string name="tile_label_wifi_off">Wireless Debugging · Off</string>
+    <string name="tile_description_wifi">Open Wireless Debugging settings</string>
+
+    <string name="tile_label_taps">Show Taps</string>
+    <string name="tile_label_taps_on">Show Taps · On</string>
+    <string name="tile_label_taps_off">Show Taps · Off</string>
+    <string name="tile_description_taps">Open Show Taps settings</string>
+</resources>
