@@ -8,6 +8,8 @@ import com.devtoggle.app.R
 import com.devtoggle.app.data.DevToggleRepository
 import com.devtoggle.app.data.TileState
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class DeveloperOptionsTileService : TileService() {
@@ -74,27 +76,31 @@ class DeveloperOptionsTileService : TileService() {
         }
     }
 
+    private val scope = CoroutineScope(Dispatchers.IO)
+
     private fun executeToggle() {
         val currentState = repository.isDeveloperOptionsEnabled()
         val newState = !currentState
-        repository.toggleDeveloperOptions(newState)
-        refreshTile()
-        
-        // If developer options are turned off, we explicitly turn off the other features 
-        // to match user expectations.
-        if (!newState) {
-            if (repository.isUsbDebuggingEnabled()) repository.toggleUsbDebugging(false)
-            if (repository.isWirelessDebuggingEnabled()) repository.toggleWirelessDebugging(false)
-
-            val context = applicationContext
-            android.service.quicksettings.TileService.requestListeningState(
-                context,
-                android.content.ComponentName(context, UsbDebuggingTileService::class.java)
-            )
-            android.service.quicksettings.TileService.requestListeningState(
-                context,
-                android.content.ComponentName(context, WirelessDebuggingTileService::class.java)
-            )
+        scope.launch {
+            repository.toggleDeveloperOptions(newState)
+            if (!newState) {
+                if (repository.isUsbDebuggingEnabled()) repository.toggleUsbDebugging(false)
+                if (repository.isWirelessDebuggingEnabled()) repository.toggleWirelessDebugging(false)
+            }
+            withContext(Dispatchers.Main) {
+                refreshTile()
+                if (!newState) {
+                    val context = applicationContext
+                    android.service.quicksettings.TileService.requestListeningState(
+                        context,
+                        android.content.ComponentName(context, UsbDebuggingTileService::class.java)
+                    )
+                    android.service.quicksettings.TileService.requestListeningState(
+                        context,
+                        android.content.ComponentName(context, WirelessDebuggingTileService::class.java)
+                    )
+                }
+            }
         }
     }
 }

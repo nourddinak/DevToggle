@@ -27,7 +27,7 @@ private val DarkColors = darkColorScheme(
 @Composable
 fun DevToggleTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = if (isSystemInDarkTheme()) DarkColors else LightColors,
+        colorScheme = DarkColors,
         content = content,
     )
 }

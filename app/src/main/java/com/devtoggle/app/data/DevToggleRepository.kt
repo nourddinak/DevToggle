@@ -170,8 +170,8 @@ class DevToggleRepository(private val context: Context) {
         }
     }
 
-    private fun executeShizukuCommand(command: String): Boolean {
-        return runCatching {
+    private suspend fun executeShizukuCommand(command: String): Boolean = withContext(Dispatchers.IO) {
+        runCatching {
             val shizukuClass = Class.forName("rikka.shizuku.Shizuku")
             val newProcessMethod = shizukuClass.getDeclaredMethod(
                 "newProcess",
@@ -181,6 +181,9 @@ class DevToggleRepository(private val context: Context) {
             )
             newProcessMethod.isAccessible = true
             val process = newProcessMethod.invoke(null, arrayOf("sh", "-c", command), null, null) as Process
+            // Prevent pipe buffer deadlocks
+            process.inputStream.bufferedReader().readText()
+            process.errorStream.bufferedReader().readText()
             process.waitFor() == 0
         }.getOrDefault(false)
     }
@@ -192,8 +195,8 @@ class DevToggleRepository(private val context: Context) {
         ) == android.content.pm.PackageManager.PERMISSION_GRANTED
     }
 
-    fun grantPermissions() {
-        if (!shizukuStatus().ready || hasNativePermissions()) return
+    suspend fun grantPermissions() = withContext(Dispatchers.IO) {
+        if (!shizukuStatus().ready || hasNativePermissions()) return@withContext
         
         runCatching {
             val pkg = context.packageName
@@ -202,7 +205,7 @@ class DevToggleRepository(private val context: Context) {
         }
     }
 
-    private fun toggleSetting(namespace: String, key: String, enable: Boolean): Boolean {
+    private suspend fun toggleSetting(namespace: String, key: String, enable: Boolean): Boolean = withContext(Dispatchers.IO) {
         val value = if (enable) 1 else 0
         val nativeSuccess = runCatching {
             if (namespace == "global") {
@@ -214,18 +217,18 @@ class DevToggleRepository(private val context: Context) {
         }.getOrDefault(false)
         
         if (!nativeSuccess && isShizukuInstalled() && runCatching { Shizuku.pingBinder() }.getOrDefault(false)) {
-            return executeShizukuCommand("settings put $namespace $key $value")
+            return@withContext executeShizukuCommand("settings put $namespace $key $value")
         }
-        return nativeSuccess
+        return@withContext nativeSuccess
     }
 
-    fun toggleDeveloperOptions(enable: Boolean): Boolean =
+    suspend fun toggleDeveloperOptions(enable: Boolean): Boolean =
         toggleSetting("global", DEVELOPMENT_SETTINGS_ENABLED, enable)
 
-    fun toggleUsbDebugging(enable: Boolean): Boolean =
+    suspend fun toggleUsbDebugging(enable: Boolean): Boolean =
         toggleSetting("global", ADB_ENABLED, enable)
 
-    fun toggleWirelessDebugging(enable: Boolean): Boolean =
+    suspend fun toggleWirelessDebugging(enable: Boolean): Boolean =
         toggleSetting("global", ADB_WIFI_ENABLED, enable)
 
     fun capabilities(): List<Capability> = listOf(

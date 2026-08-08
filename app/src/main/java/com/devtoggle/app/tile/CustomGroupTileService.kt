@@ -7,6 +7,10 @@ import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import com.devtoggle.app.MainActivity
 import com.devtoggle.app.data.DevToggleRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CustomGroupTileService : TileService() {
     private val repository by lazy { DevToggleRepository(this) }
@@ -87,29 +91,30 @@ class CustomGroupTileService : TileService() {
         executeGroupToggle()
     }
 
+    private val scope = CoroutineScope(Dispatchers.IO)
+
     private fun executeGroupToggle() {
         val config = repository.getCustomTileConfig()
         val tile = qsTile ?: return
-        
         val targetState = tile.state == Tile.STATE_INACTIVE
 
-        if (targetState) {
-            // Turning ON: Must enable Developer Options FIRST!
-            if (config.devOptions) repository.toggleDeveloperOptions(true)
-            if (config.usbDebugging) repository.toggleUsbDebugging(true)
-            if (config.wirelessDebugging) repository.toggleWirelessDebugging(true)
-        } else {
-            if (config.devOptions) repository.toggleDeveloperOptions(false)
-            if (config.usbDebugging) repository.toggleUsbDebugging(false)
-            if (config.wirelessDebugging) repository.toggleWirelessDebugging(false)
+        scope.launch {
+            if (targetState) {
+                if (config.devOptions) repository.toggleDeveloperOptions(true)
+                if (config.usbDebugging) repository.toggleUsbDebugging(true)
+                if (config.wirelessDebugging) repository.toggleWirelessDebugging(true)
+            } else {
+                if (config.devOptions) repository.toggleDeveloperOptions(false)
+                if (config.usbDebugging) repository.toggleUsbDebugging(false)
+                if (config.wirelessDebugging) repository.toggleWirelessDebugging(false)
+            }
+            withContext(Dispatchers.Main) {
+                refreshTile()
+                val context = applicationContext
+                TileService.requestListeningState(context, ComponentName(context, DeveloperOptionsTileService::class.java))
+                TileService.requestListeningState(context, ComponentName(context, UsbDebuggingTileService::class.java))
+                TileService.requestListeningState(context, ComponentName(context, WirelessDebuggingTileService::class.java))
+            }
         }
-
-        refreshTile()
-        
-        // Request UI updates for all other standard tiles
-        val context = applicationContext
-        TileService.requestListeningState(context, ComponentName(context, DeveloperOptionsTileService::class.java))
-        TileService.requestListeningState(context, ComponentName(context, UsbDebuggingTileService::class.java))
-        TileService.requestListeningState(context, ComponentName(context, WirelessDebuggingTileService::class.java))
     }
 }

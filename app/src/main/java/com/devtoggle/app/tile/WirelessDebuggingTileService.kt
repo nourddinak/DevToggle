@@ -8,6 +8,8 @@ import com.devtoggle.app.R
 import com.devtoggle.app.data.DevToggleRepository
 import com.devtoggle.app.data.TileState
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class WirelessDebuggingTileService : TileService() {
@@ -71,9 +73,15 @@ class WirelessDebuggingTileService : TileService() {
         }
     }
 
+    private val scope = CoroutineScope(Dispatchers.IO)
+
     private fun executeToggle() {
         val currentState = repository.isWirelessDebuggingEnabled()
-        repository.toggleWirelessDebugging(!currentState)
-        refreshTile()
+        scope.launch {
+            repository.toggleWirelessDebugging(!currentState)
+            withContext(Dispatchers.Main) {
+                refreshTile()
+            }
+        }
     }
 }

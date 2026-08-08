@@ -8,6 +8,8 @@ import com.devtoggle.app.R
 import com.devtoggle.app.data.DevToggleRepository
 import com.devtoggle.app.data.TileState
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class UsbDebuggingTileService : TileService() {
@@ -71,9 +73,15 @@ class UsbDebuggingTileService : TileService() {
         }
     }
 
+    private val scope = CoroutineScope(Dispatchers.IO)
+
     private fun executeToggle() {
         val currentState = repository.isUsbDebuggingEnabled()
-        repository.toggleUsbDebugging(!currentState)
-        refreshTile()
+        scope.launch {
+            repository.toggleUsbDebugging(!currentState)
+            withContext(Dispatchers.Main) {
+                refreshTile()
+            }
+        }
     }
 }

@@ -16,8 +16,15 @@ object Updater {
      * Checks for updates and returns a Pair of (new_version_name, release_url) if an update is available.
      * Returns null if no update is available or if an error occurs.
      */
-    suspend fun checkForUpdates(): Pair<String, String>? = withContext(Dispatchers.IO) {
+    suspend fun checkForUpdates(context: android.content.Context): Pair<String, String>? = withContext(Dispatchers.IO) {
         try {
+            val prefs = context.getSharedPreferences("dev_toggle_updater", android.content.Context.MODE_PRIVATE)
+            val lastCheck = prefs.getLong("last_check_time", 0)
+            val now = System.currentTimeMillis()
+            if (now - lastCheck < 24 * 60 * 60 * 1000) {
+                return@withContext null
+            }
+            
             val url = URL(API_URL)
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
@@ -40,7 +47,10 @@ object Updater {
                 val currentVersion = BuildConfig.VERSION_NAME
 
                 if (isNewerVersion(currentVersion, latestVersion)) {
+                    prefs.edit().putLong("last_check_time", now).apply()
                     return@withContext Pair(latestVersion, releaseUrl)
+                } else {
+                    prefs.edit().putLong("last_check_time", now).apply()
                 }
             }
         } catch (e: Exception) {

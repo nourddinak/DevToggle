@@ -76,6 +76,8 @@ import com.devtoggle.app.data.DevToggleRepository
 import com.devtoggle.app.data.ShizukuStatus
 import com.devtoggle.app.ui.theme.DevToggleTheme
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withContext
 import androidx.compose.runtime.LaunchedEffect
 import com.devtoggle.app.data.Updater
@@ -107,26 +109,39 @@ private fun DevToggleApp() {
     var updateAvailable by remember { mutableStateOf<Pair<String, String>?>(null) }
 
     LaunchedEffect(Unit) {
-        val update = Updater.checkForUpdates()
+        val update = Updater.checkForUpdates(context)
         if (update != null) {
             updateAvailable = update
         }
     }
 
     fun refresh() {
-        status = repository.shizukuStatus()
-        if (status.installed && status.running && status.permissionGranted && !status.hasNativePermissions) {
-            kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
-                repository.grantPermissions()
-                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
-                    status = repository.shizukuStatus()
+        val scope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO)
+        scope.launch {
+            val newStatus = repository.shizukuStatus()
+            val newDev = repository.isDeveloperOptionsEnabled()
+            val newUsb = repository.isUsbDebuggingEnabled()
+            val newWifi = repository.isWirelessDebuggingEnabled()
+            val newConfig = repository.getCustomTileConfig()
+            
+            kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                status = newStatus
+                developerOptionsEnabled = newDev
+                usbDebuggingEnabled = newUsb
+                wirelessDebuggingEnabled = newWifi
+                customTileConfig = newConfig
+
+                if (status.installed && status.running && status.permissionGranted && !status.hasNativePermissions) {
+                    scope.launch {
+                        repository.grantPermissions()
+                        val finalStatus = repository.shizukuStatus()
+                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                            status = finalStatus
+                        }
+                    }
                 }
             }
         }
-        developerOptionsEnabled = repository.isDeveloperOptionsEnabled()
-        usbDebuggingEnabled = repository.isUsbDebuggingEnabled()
-        wirelessDebuggingEnabled = repository.isWirelessDebuggingEnabled()
-        customTileConfig = repository.getCustomTileConfig()
     }
 
     DisposableEffect(lifecycleOwner) {
