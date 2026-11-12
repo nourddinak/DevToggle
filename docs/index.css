@@ -21,7 +21,7 @@ body {
     overflow-x: hidden;
     line-height: 1.6;
     /* Subtle grid background for a tech feel */
-    background-image: 
+    background-image:
         linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 50px 50px;
@@ -75,6 +75,15 @@ h1, h2, h3 {
     padding: 0.5rem 1.25rem !important;
     border-radius: 6px;
     color: var(--text-main) !important;
+}
+.nav-btn::after {
+    content: "";
+    display: inline-block;
+    width: 95px;
+    height: 20px;
+    margin-left: 0.65rem;
+    vertical-align: middle;
+    background: url("https://img.shields.io/github/stars/nourddinak/DevToggle?style=social") center / contain no-repeat;
 }
 .nav-btn:hover { background: #111; border-color: #444; }
 
